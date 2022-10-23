@@ -10,9 +10,11 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.*;
+import java.util.logging.Logger;
 
 @RestController
 public class UsuarioController {
+
 
     @Autowired
     private UsuarioService service;
@@ -26,9 +28,11 @@ public class UsuarioController {
     @GetMapping("/{id}")
     public ResponseEntity<?> detalle(@PathVariable Long id){
         Optional<Usuario> usuarioOptional = service.porId(id);
-        if(usuarioOptional.isEmpty()){
+        if(usuarioOptional.isPresent()){
+            System.out.println("El usuario es : " + usuarioOptional.get().getNombre());
             return ResponseEntity.ok().body(usuarioOptional.get());
         }
+        System.out.println("El usuario es : " + usuarioOptional);
         return ResponseEntity.notFound().build();
     }
 
